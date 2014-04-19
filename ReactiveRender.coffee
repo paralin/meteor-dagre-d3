@@ -16,6 +16,14 @@ class ReactiveDagre
     @graph.addEdge id, source, dest, options
     if !norerender? || !norerender
       @render()
+  delEdge: (id, norerender)->
+    @graph.delEdge id
+    if !norerender? || !norerender
+      @render()
+  delNode: (id, norerender)->
+    @graph.delNode id
+    if !norerender? || !norerender
+      @render()
   transition: (selection)->
     selection.transition().duration(500)
 

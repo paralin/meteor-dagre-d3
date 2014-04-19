@@ -170,6 +170,8 @@ Template.dagre.rendered = ->
 
 Once the graph is initially rendered, if you call `g.addNode` or `g.addEdge`, the graph will update automatically, with a nice 500ms transition. You can override the transition function by overwriting `ReactiveDagre.prototype.transition`.
 
+You can also remove edges or nodes by ID using `g.delNode` or `g.delEdge`.
+
 Please note that you're setting basically an HTML selector in the constructor of `ReactiveDagre`. If you try to add nodes when Meteor hasn't yet rendered your base `svg g`, it will throw errors. It is safe to constuct `ReactiveDagre` without any DOM, however.
 
 ## License
