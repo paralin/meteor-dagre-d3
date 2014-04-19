@@ -1,4 +1,4 @@
-# dagre-d3 - A D3-based renderer for Dagre
+# A D3-based renderer for Dagre
 
 [![Build Status](https://secure.travis-ci.org/cpettitt/dagre-d3.png?branch=master)](http://travis-ci.org/cpettitt/dagre-d3)
 
