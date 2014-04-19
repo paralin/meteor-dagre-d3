@@ -57,9 +57,6 @@ module.exports =  {
 },{"./lib/Renderer":3,"./lib/version":4,"dagre":11,"graphlib":28}],3:[function(require,module,exports){
 var layout = require('dagre').layout;
 
-var d3;
-try { d3 = require('d3'); } catch (_) { d3 = window.d3; }
-
 module.exports = Renderer;
 
 function Renderer() {
