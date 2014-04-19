@@ -3,6 +3,8 @@ Package.describe({
 });
 
 Package.on_use(function (api, where) {
+  api.use('coffeescript');
   api.use('d3');
-  api.add_files('dagre-d3.js', ['client']);
+  api.add_files(['dagre-d3.js', 'ReactiveRender.coffee'], ['client']);
+  api.export('ReactiveDagre');
 });
