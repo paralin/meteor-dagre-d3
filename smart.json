@@ -1,5 +1,5 @@
 {
-  "name": "dagre-d3",
+  "name": "dagred3",
   "description": "A d3 renderer for the dagre layout engine.",
   "homepage": "https://github.com/cpettitt/dagre-d3",
   "author": "Christian Stewart <kidovate@gmail.com>",
