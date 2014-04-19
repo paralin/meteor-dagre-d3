@@ -1,101 +1,35 @@
-# A D3-based renderer for Dagre
+# D3-based renderer for Dagre
 
-[![Build Status](https://secure.travis-ci.org/cpettitt/dagre-d3.png?branch=master)](http://travis-ci.org/cpettitt/dagre-d3)
+This is the dagre d3 renderer packaged for Meteor with some additional helpful utilities.
 
-**Note: View the original repo [here](https://github.com/cpettitt/dagre-d3).**
+**You can view the original non-meteor repository [here](https://github.com/cpettitt/dagre-d3).**
 
 Dagre is a JavaScript library that makes it easy to lay out directed graphs on
 the client-side. The dagre-d3 library acts a front-end to dagre, providing
 actual rendering using [D3][].
 
-Note that dagre-d3 is current a pre-1.0.0 library. We will do our best to
-maintain backwards compatibility for patch level increases (e.g. 0.0.1 to
-0.0.2) but make no claim to backwards compatibility across minor releases (e.g.
-0.0.1 to 0.1.0). Watch our [CHANGELOG](CHANGELOG.md) for details on changes.
-
 ## Demo
 
-Try our [interactive demo](http://cpettitt.github.com/project/dagre-d3/latest/demo/interactive-demo.html)!
-
-Or some of our other examples:
-
-* [Sentence Tokenization](http://cpettitt.github.com/project/dagre-d3/latest/demo/sentence-tokenization.html)
-* [TCP State Diagram](http://cpettitt.github.com/project/dagre-d3/latest/demo/tcp-state-diagram.html)
-    * [TCP State Diagram](http://cpettitt.github.com/project/dagre-d3/latest/demo/tcp-state-diagram-json.html) using JSON as input.
-
-These demos and more can be found in the `demo` folder of the project. Simply
-open them in your browser - there is no need to start a web server.
+There will be a demo of the new `ReactiveDagre` class added to the meteor implementation soon.
 
 ## Getting dagre-d3
 
-### Browser Scrips
+You can install it with meteorite:
 
-You can get the latest browser-ready scripts:
-
-* [dagre-d3.js](http://cpettitt.github.io/project/dagre-d3/latest/dagre-d3.js)
-* [dagre-d3.min.js](http://cpettitt.github.io/project/dagre-d3/latest/dagre-d3.min.js)
-
-These scripts include everything you need to use dagre-d3. See Using Dagre
-below for details.
-
-### NPM Install
-
-Before installing this library you need to install the [npm package manager].
-
-To get dagre-d3 from npm, use:
-
-    $ npm install dagre-d3
-
-### Build From Source
-
-Before building this library you need to install the [npm package manager].
-
-Check out this project and run this command from the root of the project:
-
-    $ make
-
-This will generate `dagre-d3.js` and `dagre-d3.min.js` in the `dist` directory
-of the project.
+```
+mrt add dagred3
+```
 
 ## Using dagre-d3
 
-To use dagre-d3, there are a few basic steps:
-
-1. Get the library
-2. Create a graph
-3. Render the graph
-4. Optionally configure the layout
-
-We'll walk through each of these steps below.
-
-### Getting dagre-d3
-
-First we need to load the dagre-d3 library. In an HTML page you do this by adding
-the following snippet:
-
-```html
-<script src="http://d3js.org/d3.v3.min.js"></script>
-<script src="http://cpettitt.github.io/project/dagre-d3/latest/dagre-d3.min.js"></script>
-```
-
-We recommend you use a specific version though, or include your own copy of the
-library, because the API may change across releases. Here's an example of using
-dagre-d3 vX.Y.Z, where vX.Y.Z is a version of dagre, such as v0.1.5 (see [Releases](https://github.com/cpettitt/dagre-d3/releases) for a list of releases):
-
-```html
-<script src="http://d3js.org/d3.v3.min.js"></script>
-<script src="http://cpettitt.github.io/project/dagre-d3/vX.Y.Z/dagre-d3.min.js"></script>
-```
-
-This will add a new global `dagreD3`. We show you how to use this below.
+With dagre-d3, you will first create a graph, then render it. Much of this process is wrapped in `ReactiveDagre`, which is outlined below.
 
 ### Creating a Graph
 
-We use [graphlib](https://github.com/cpettitt/graphlib) to create graphs in
+The renderer uses [graphlib](https://github.com/cpettitt/graphlib) to create graphs in
 dagre, so its probably worth taking a look at its
 [API](http://cpettitt.github.io/project/graphlib/latest/doc/index.html).
-Graphlib comes bundled with dagre-d3. In this section, we'll show you how to
-create a simple graph.
+Graphlib comes bundled with dagre-d3.
 
 ```js
 // Create a new directed graph
@@ -121,9 +55,6 @@ g.addEdge(null, "bpitt",     "kbacon",    { label: "Sleepers" });
 g.addEdge(null, "hford",     "lwilson",   { label: "Anchorman 2" });
 g.addEdge(null, "lwilson",   "kbacon",    { label: "Telling Lies in America" });
 ```
-
-This simple graph was derived from [The Oracle of
-Bacon](http://oracleofbacon.org/).
 
 ### Rendering the Graph
 
@@ -210,6 +141,36 @@ renderer.layout(layout).run(g, d3.select("svg g"));
 This produces the following graph:
 
 ![oracle-of-bacon2.png](http://cpettitt.github.io/project/dagre-d3/static/oracle-of-bacon2.png)
+
+##ReactiveDagre
+
+The class added in this implementation for Meteor is `ReactiveDagre`. It automatically re-renders the layout with transitions when you add nodes, and wraps a lot of the init phases. Future support is planned for reactive functions in the data, for example, basing a graph off of a traditional Meteor function.
+
+Right now, this is the simplified initialization process:
+
+```coffee
+
+g = new ReactiveDagre "svg g"
+
+graphBuilt = false
+buildGraph = ->
+   if !graphBuilt
+      graphBuilt = true
+      g.layout.nodeSep(20).rankDir("LR")
+      #Third option is no-render, if you don't want the graph to update immediately
+      g.addNode "cool", {label: "Something Cool"}, true
+      g.addNode "awesome", {label: "Something Awesome"}, true
+      g.addEdge null, "cool", "awesome", {label: "Leads To"}, true
+
+Template.dagre.rendered = ->
+   buildGraph()
+   g.render()
+
+```
+
+Once the graph is initially rendered, if you call `g.addNode` or `g.addEdge`, the graph will update automatically, with a nice 500ms transition. You can override the transition function by overwriting `ReactiveDagre.prototype.transition`.
+
+Please note that you're setting basically an HTML selector in the constructor of `ReactiveDagre`. If you try to add nodes when Meteor hasn't yet rendered your base `svg g`, it will throw errors. It is safe to constuct `ReactiveDagre` without any DOM, however.
 
 ## License
 
