@@ -4,7 +4,6 @@ class ReactiveDagre
     @renderer = new dagreD3.Renderer()
     @layout = dagreD3.layout()
     @target = target
-    console.log @
     @renderer = @renderer.layout(@layout).transition(ReactiveDagre::transition)
   render: ->
     @renderer.run(@graph, d3.select(@target))

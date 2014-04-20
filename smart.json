@@ -3,7 +3,7 @@
   "description": "A d3 renderer for the dagre layout engine.",
   "homepage": "https://github.com/cpettitt/dagre-d3",
   "author": "Christian Stewart <kidovate@gmail.com>",
-  "version": "0.1.91",
+  "version": "0.1.92",
   "git": "https://github.com/kidovate/meteor-dagre-d3.git",
   "packages": {}
 }
