@@ -1,5 +1,5 @@
 contains = (a, b) ->
-  !!~a.indexOf(b)
+  _.contains a, b
 
 class ReactiveDagre
   constructor: (target)->
