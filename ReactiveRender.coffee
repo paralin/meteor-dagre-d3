@@ -1,3 +1,6 @@
+contains = (a, b) ->
+  !!~a.indexOf(b)
+
 class ReactiveDagre
   constructor: (target)->
     @graph = new dagreD3.Digraph()
@@ -16,10 +19,12 @@ class ReactiveDagre
     if !norerender? || !norerender
       @render()
   delEdge: (id, norerender)->
+    return if !contains @graph.edges(), id
     @graph.delEdge id
     if !norerender? || !norerender
       @render()
   delNode: (id, norerender)->
+    return if !contains @graph.nodes(), id
     @graph.delNode id
     if !norerender? || !norerender
       @render()
