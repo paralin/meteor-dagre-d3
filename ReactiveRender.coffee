@@ -15,6 +15,8 @@ class ReactiveDagre
     if !norerender? || !norerender
       @render()
   addEdge: (id, source, dest, options, norerender)->
+    return if !contains @graph.nodes(), source
+    return if !contains @graph.nodes(), dest
     @graph.addEdge id, source, dest, options
     if !norerender? || !norerender
       @render()
